@@ -5,7 +5,6 @@ app.use(express.json());
 
 // --- DADOS DO RELAX BOT (ATUALIZADOS) ---
 const TOKEN_ACESSO = "EAAMz5j9geUkBQhArBdpZCWUBmiDSZBZADQK6LmLeLNVh56ZBE30H4Hxa4JGjwpmY4QA7UyJfZAWZAzkIITrReIjOURbyNdEoQtR8Bii44ZCagbgnkQZB2eodaEWs6ZBZAS7GEXhFr62kjvvEFmhsdw7wkZABo5UQJvUvrZB166hiNRVXnfpNKGa8CIyHiwAGU0HnYs2i64jL1RQDiOwzm5MvSTWxSKjWPZAElFPb02H9f9zfLEwNd4932MT34fEHnMQBkc3YdroaHQBoUaY72ZBhIxOkr2Aw2OLQZDZD";
-const ID_TELEFONE = "967974033069652";
 const VERSAO_API = "v22.0"; 
 const SENHA_WEBHOOK = "relax_bot_2026"; // Esta é a senha que você deve colocar no campo "Token de Verificação" no Meta
 
