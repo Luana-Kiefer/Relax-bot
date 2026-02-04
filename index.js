@@ -3,12 +3,13 @@ const axios = require('axios');
 const app = express();
 app.use(express.json());
 
-// --- DADOS DO RELAX BOT (ATUALIZADOS) ---
+// --- DADOS DO RELAX BOT (CORRIGIDOS) ---
 const TOKEN_ACESSO = "EAAMz5j9geUkBQhArBdpZCWUBmiDSZBZADQK6LmLeLNVh56ZBE30H4Hxa4JGjwpmY4QA7UyJfZAWZAzkIITrReIjOURbyNdEoQtR8Bii44ZCagbgnkQZB2eodaEWs6ZBZAS7GEXhFr62kjvvEFmhsdw7wkZABo5UQJvUvrZB166hiNRVXnfpNKGa8CIyHiwAGU0HnYs2i64jL1RQDiOwzm5MvSTWxSKjWPZAElFPb02H9f9zfLEwNd4932MT34fEHnMQBkc3YdroaHQBoUaY72ZBhIxOkr2Aw2OLQZDZD";
+const ID_TELEFONE = "967974033069652"; // <--- ESTA LINHA TINHA SIDO APAGADA
 const VERSAO_API = "v22.0"; 
-const SENHA_WEBHOOK = "relax_bot_2026"; // Esta é a senha que você deve colocar no campo "Token de Verificação" no Meta
+const SENHA_WEBHOOK = "relax_bot_2026"; 
 
-// 1. Rota de Validação do Webhook (Obrigatória para o Meta aceitar sua URL)
+// 1. Rota de Validação do Webhook
 app.get('/webhook', (req, res) => {
     const mode = req.query['hub.mode'];
     const token = req.query['hub.verify_token'];
@@ -26,19 +27,17 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', async (req, res) => {
     const body = req.body;
 
-    // Verifica se é uma notificação de mensagem
     if (body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]) {
         const msg = body.entry[0].changes[0].value.messages[0];
-        const doNumero = msg.from; // Número de quem enviou
+        const doNumero = msg.from; 
         const textoRecebido = msg.text ? msg.text.body : "";
 
         console.log(`Mensagem recebida de ${doNumero}: ${textoRecebido}`);
 
-        // Lógica de Resposta
         const resposta = "Olá! Eu sou o Relax Bot. Recebi sua mensagem com sucesso! Como posso te ajudar hoje?";
 
         try {
-            // Enviando a resposta de volta usando a API da Meta
+            // Agora o ID_TELEFONE está definido e vai funcionar!
             await axios.post(`https://graph.facebook.com/${VERSAO_API}/${ID_TELEFONE}/messages`, {
                 messaging_product: "whatsapp",
                 to: doNumero,
@@ -55,11 +54,9 @@ app.post('/webhook', async (req, res) => {
         }
     }
 
-    // Retorna 200 para avisar ao Meta que recebemos o evento
     res.sendStatus(200);
 });
 
-// A porta deve ser dinâmica para funcionar na Render
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Relax Bot online na porta ${PORT}`);
