@@ -3,13 +3,13 @@ const axios = require('axios');
 const app = express();
 app.use(express.json());
 
-// --- DADOS DO RELAX BOT (CORRIGIDOS) ---
-const TOKEN_ACESSO = "EAAMz5j9geUkBQhArBdpZCWUBmiDSZBZADQK6LmLeLNVh56ZBE30H4Hxa4JGjwpmY4QA7UyJfZAWZAzkIITrReIjOURbyNdEoQtR8Bii44ZCagbgnkQZB2eodaEWs6ZBZAS7GEXhFr62kjvvEFmhsdw7wkZABo5UQJvUvrZB166hiNRVXnfpNKGa8CIyHiwAGU0HnYs2i64jL1RQDiOwzm5MvSTWxSKjWPZAElFPb02H9f9zfLEwNd4932MT34fEHnMQBkc3YdroaHQBoUaY72ZBhIxOkr2Aw2OLQZDZD";
-const ID_TELEFONE = "967974033069652"; // <--- ESTA LINHA TINHA SIDO APAGADA
+// --- DADOS DO RELAX BOT (ATUALIZADOS COM O NOVO TOKEN) ---
+const TOKEN_ACESSO = "EAAMz5j9geUkBQiBZAbTun4fnsr2KYeaJOXyVZCwwmm0KSNEg8ikwtYTCQilGQXlvqJz2XP8ZC0U0IcgFQQo7QrZBjpQvyLrb2tqoKpsnm9jkHvd2FDvlAZBwk59HcUKjP3h2lnkDZCRnDjeUxdl5PqEIeyhjieUorbfkbSczttX34S6yVdoviBJc9JMvONtyUovLnoAm0D7Uht3xv3ZA4sAjwWYGNcVhkmZBdG0l0HABfCVm1g6Tls6zTjomBEr3NJbIeuuwKnjspLOdKv76UiUwjoTmF4wHdLgQRBrZCRwZDZD";
+const ID_TELEFONE = "967974033069652"; 
 const VERSAO_API = "v22.0"; 
 const SENHA_WEBHOOK = "relax_bot_2026"; 
 
-// 1. Rota de Validação do Webhook
+// 1. Rota de Validação do Webhook (Para a Meta validar seu servidor)
 app.get('/webhook', (req, res) => {
     const mode = req.query['hub.mode'];
     const token = req.query['hub.verify_token'];
@@ -23,7 +23,7 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-// 2. Rota que recebe as mensagens do WhatsApp
+// 2. Rota que recebe e responde as mensagens
 app.post('/webhook', async (req, res) => {
     const body = req.body;
 
@@ -37,7 +37,6 @@ app.post('/webhook', async (req, res) => {
         const resposta = "Olá! Eu sou o Relax Bot. Recebi sua mensagem com sucesso! Como posso te ajudar hoje?";
 
         try {
-            // Agora o ID_TELEFONE está definido e vai funcionar!
             await axios.post(`https://graph.facebook.com/${VERSAO_API}/${ID_TELEFONE}/messages`, {
                 messaging_product: "whatsapp",
                 to: doNumero,
@@ -57,6 +56,7 @@ app.post('/webhook', async (req, res) => {
     res.sendStatus(200);
 });
 
+// Porta configurada para a Render
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Relax Bot online na porta ${PORT}`);
