@@ -3,13 +3,17 @@ const axios = require('axios');
 const app = express();
 app.use(express.json());
 
-// --- DADOS DO RELAX BOT (ATUALIZADOS COM TOKEN PERMANENTE) ---
+// --- CONFIGURAÇÃO OFICIAL DO RELAX BOT ---
+// Seu Token Permanente gerado via Usuário do Sistema
 const TOKEN_ACESSO = "EAAMz5j9geUkBQtNodfSxniANpBX3oCETBrjyC6XoeOhbml2s6wV73VMDYQk08JyinTsnD8lMoRX2GikzMh4m0bgJTJTNk3SkVzGXcTIq1jWQl5H1wKQFkZCA3yw8gZAh4RPPZB1UEgvkKY5M9ogEZBec1dSOtBe2ZAu6MpC0f5A0TZCH3riQWSeDZCrqtyaiOAAZBQZDZD";
-const ID_TELEFONE = "967974033069652"; 
+
+// Seu ID de Telefone oficial (ID do número real)
+const ID_TELEFONE = "1058159627372166"; 
+
 const VERSAO_API = "v22.0"; 
 const SENHA_WEBHOOK = "relax_bot_2026"; 
 
-// 1. Rota de Validação do Webhook (Necessário para a Meta validar seu servidor)
+// 1. Validação do Webhook (Meta -> Seu Servidor)
 app.get('/webhook', (req, res) => {
     const mode = req.query['hub.mode'];
     const token = req.query['hub.verify_token'];
@@ -23,11 +27,10 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-// 2. Rota que recebe e responde as mensagens no WhatsApp
+// 2. Recebimento e Resposta de Mensagens
 app.post('/webhook', async (req, res) => {
     const body = req.body;
 
-    // Verifica se é uma mensagem de texto recebida
     if (body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]) {
         const msg = body.entry[0].changes[0].value.messages[0];
         const doNumero = msg.from; 
@@ -35,11 +38,10 @@ app.post('/webhook', async (req, res) => {
 
         console.log(`Mensagem recebida de ${doNumero}: ${textoRecebido}`);
 
-        // Resposta padrão do Relax Bot
+        // Resposta personalizada do Relax Bot
         const resposta = "Olá! Eu sou o Relax Bot. Recebi sua mensagem com sucesso! Como posso te ajudar hoje?";
 
         try {
-            // Chamada para a API da Meta para enviar a resposta
             await axios.post(`https://graph.facebook.com/${VERSAO_API}/${ID_TELEFONE}/messages`, {
                 messaging_product: "whatsapp",
                 to: doNumero,
@@ -59,8 +61,8 @@ app.post('/webhook', async (req, res) => {
     res.sendStatus(200);
 });
 
-// Porta configurada para a Render (Hospedagem)
+// Porta padrão da Render
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`Relax Bot online na porta ${PORT}`);
+    console.log(`Relax Bot oficial online na porta ${PORT}`);
 });
